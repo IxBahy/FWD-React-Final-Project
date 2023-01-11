@@ -12,20 +12,16 @@ export const Search = () => {
         let query = e.target.value
         if (query) {
             const res = BooksAPI.search(query)
-            res.then((books) => {
-                setBooks(books)
-            }
-            )
-
+            res.then((book) => {
+                setBooks(book)
+            })
         } else {
             setBooks([])
-
         }
 
     }
     const handleShelfChange = (id, shelfType) => {
         BooksAPI.update(id, shelfType)
-
     }
     return (
         <>
@@ -39,7 +35,6 @@ export const Search = () => {
                                     books.filter((book) => Object.keys(book).includes('imageLinks'))
                                         .map((book) => {
                                             return <Book key={book.id} book={book} handleShelfChange={handleShelfChange} />
-
                                         })
                                     :
                                     <h2>No books matches the search</h2>

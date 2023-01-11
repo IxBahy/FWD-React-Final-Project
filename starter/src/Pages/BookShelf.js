@@ -12,8 +12,8 @@ export const BookShelf = ({ shelfName, shelfType, books, handleShelfChange }) =>
                     <ol className="books-grid">
                         {
                             books.filter((book) => book.shelf === shelfType)
-                                .map((book, index) => {
-                                    return <Book key={index} book={book} handleShelfChange={handleShelfChange} />
+                                .map((book) => {
+                                    return <Book key={book.id} book={book} handleShelfChange={handleShelfChange} />
                                 })
 
                         }

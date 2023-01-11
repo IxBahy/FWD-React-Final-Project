@@ -188,3 +188,38 @@ body,
   text-align: center;
   font-size: 0.8em;
 }
+
+/* error page */
+
+.error-container {
+  background-color: rgb(85, 163, 70);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 20%;
+  height: 20vh;
+  border-radius: 6px;
+  margin: 5px auto;
+  color: #eee;
+}
+
+
+
+.error-buttons {
+  text-decoration: none;
+  color: black;
+  display: inline-block;
+  border: 1px black solid;
+  border-radius: 6px;
+  width: 15%;
+  text-align: center;
+  padding: 3px 2px;
+  background-color: rgb(243, 243, 243);
+  transition: all 0.8s;
+}
+
+.error-buttons:hover {
+  background-color: rgb(20, 46, 7);
+  color: #eee;
+}

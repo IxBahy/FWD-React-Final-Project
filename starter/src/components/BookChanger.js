@@ -9,10 +9,10 @@ export const BookChanger = ({ book, handleShelfChange }) => {
             <div className="book-shelf-changer">
                 {/* celect to choose the self you want the book to be at  */}
                 <select onChange={(e) => handleShelfChange(book.id, e.target.value)} defaultValue={book.shelf}>
-                    {/* <option value="none" disabled>
+                    <option disabled>
                         Move to...
-                    </option> */}
-                    <option value="currentlyReading"  >
+                    </option>
+                    <option value="currentlyReading" >
                         Currently Reading
                     </option>
                     <option value="wantToRead" >Want to Read</option>

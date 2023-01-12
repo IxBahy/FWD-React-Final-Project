@@ -1,25 +1,56 @@
 import React from 'react'
 import * as BooksAPI from '../API/BooksAPI'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Book } from '../components/Book'
 import { SearchBar } from '../components/SearchBar';
 
 export const Search = () => {
+    const [searchBooks, setSearchBooks] = useState([]);
+    const [shelfBooks, setshelfBooks] = useState([]);
+    const [query, setQuery] = useState('');
 
-    const [books, setBooks] = useState([]);
 
-    const handleSearchChange = (e) => {
-        let query = e.target.value
+
+    const fetchAllBooks = async () => {
+        const allBooks = await BooksAPI.getAll()
+        setshelfBooks(allBooks)
+    }
+    fetchAllBooks()
+
+
+    useEffect(() => {
+        const combareBookId = (searchBook, shelfBooks) => {
+            shelfBooks.forEach((book) => {
+                if (searchBook.id === book.id) {
+                    searchBook.shelf = book.shelf
+                    console.log('swap');
+                }
+            })
+        }
         if (query) {
+            fetchAllBooks()
             const res = BooksAPI.search(query)
-            res.then((book) => {
-                setBooks(book)
+            res.then((books) => {
+                console.log(shelfBooks, '  ', res);
+                books.forEach((searchBook) => {
+                    combareBookId(searchBook, shelfBooks)
+                })
+                setSearchBooks(books)
             })
         } else {
-            setBooks([])
+            setSearchBooks([])
         }
+        return () => {
 
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [query]);
+
+
+    const handleSearchChange = (e) => {
+        setQuery(e.target.value)
     }
+
     const handleShelfChange = (id, shelfType) => {
         BooksAPI.update(id, shelfType)
     }
@@ -31,8 +62,8 @@ export const Search = () => {
                     <div className="search-books-results">
                         <ol className="books-grid">
                             {
-                                books && books.length > 0 ?
-                                    books.filter((book) => Object.keys(book).includes('imageLinks'))
+                                searchBooks && searchBooks.length > 0 ?
+                                    searchBooks.filter((book) => Object.keys(book).includes('imageLinks'))
                                         .map((book) => {
                                             return <Book key={book.id} book={book} handleShelfChange={handleShelfChange} />
                                         })

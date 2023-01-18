@@ -15,9 +15,12 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [booksAPI, setBooksAPI] = useState([]);
   //functions
-  const handleShelfChange = (id, shelfType) => {
-    BooksAPI.update(id, shelfType)
-    setLoading(true)
+  const handleShelfChange = (book, shelfType) => {
+    book.shelf = shelfType
+    BooksAPI.update(book.id, shelfType).then(() => {
+      setBooksAPI([...booksAPI.filter((b) => b.id !== book.id), book])
+    })
+    // setLoading(true)
   }
   useEffect(() => {
     //handling the API call to get all the books

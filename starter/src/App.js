@@ -1,8 +1,10 @@
 import "./css/App.css";
 import { useEffect, useState } from "react";
-import { BookShelf } from "./Pages/BookShelf";
-import { NavBar } from "./components/NavBar";
 import * as BooksAPI from './API/BooksAPI'
+import { Home } from "./Pages/Home";
+import { Search } from "./Pages/Search";
+import { Error } from "./Pages/Error";
+import { Routes, Route } from 'react-router-dom'
 
 // declaring static va
 function App() {
@@ -36,17 +38,12 @@ function App() {
     loading ? (<h2 style={{ textAlign: 'center' }}> Loading</h2>) :
       (
         <>
-          <NavBar />
-          <div className="list-books">
-            <div className="list-books-content">
-              <div>
-                {shelfs.map((shelf, index) => {
-                  return <BookShelf key={index} shelfName={shelf.title} shelfType={shelf.type} books={booksAPI} handleShelfChange={handleShelfChange} />
-                })}
+          <Routes>
+            <Route exact path="/" element={<Home handleShelfChange={handleShelfChange} books={booksAPI} shelfs={shelfs} />} />
+            <Route exact path="/search" element={<Search shelfBooks={booksAPI} handleShelfChange={handleShelfChange} />} />
+            <Route path="*" element={<Error />} />
+          </Routes>
 
-              </div>
-            </div>
-          </div>
         </>
       )
   )

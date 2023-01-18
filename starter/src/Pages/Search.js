@@ -4,18 +4,10 @@ import { useState, useEffect } from "react";
 import { Book } from '../components/Book'
 import { SearchBar } from '../components/SearchBar';
 
-export const Search = () => {
+export const Search = ({ shelfBooks, handleShelfChange }) => {
     const [searchBooks, setSearchBooks] = useState([]);
-    const [shelfBooks, setshelfBooks] = useState([]);
     const [query, setQuery] = useState('');
 
-
-
-    const fetchAllBooks = async () => {
-        const allBooks = await BooksAPI.getAll()
-        setshelfBooks(allBooks)
-    }
-    fetchAllBooks()
 
 
     useEffect(() => {
@@ -28,14 +20,20 @@ export const Search = () => {
             })
         }
         if (query) {
-            fetchAllBooks()
             const res = BooksAPI.search(query)
+            console.log('res', res);
             res.then((books) => {
-                console.log(shelfBooks, '  ', res);
-                books.forEach((searchBook) => {
-                    combareBookId(searchBook, shelfBooks)
-                })
-                setSearchBooks(books)
+                console.log('all books', books.error);
+                if (books.error === 'empty query') {
+
+                } else {
+                    books.forEach((searchBook) => {
+                        combareBookId(searchBook, shelfBooks)
+                    })
+                    setSearchBooks(books)
+                }
+
+
             })
         } else {
             setSearchBooks([])
@@ -51,9 +49,6 @@ export const Search = () => {
         setQuery(e.target.value)
     }
 
-    const handleShelfChange = (id, shelfType) => {
-        BooksAPI.update(id, shelfType)
-    }
     return (
         <>
             <div className="app">
